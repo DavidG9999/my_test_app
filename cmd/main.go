@@ -11,16 +11,19 @@ import (
 	"github.com/DavidG9999/my_test_app/interal/service"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
 
 func main() {
+	logrus.SetFormatter(new(logrus.JSONFormatter))
+
 	if err := initConfig(); err != nil {
-		log.Fatalf("error initializiing configs: %s", err.Error())
+		logrus.Fatalf("error initializiing configs: %s", err.Error())
 	}
 
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("error loading env variables: %s", err.Error())
+		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
 
 	db, err := postgres.NewPostgresDB(postgres.Config{
@@ -32,7 +35,7 @@ func main() {
 		SSLMode:  viper.GetString("db.sslmode"),
 	})
 	if err != nil {
-		log.Fatalf("failed to connect db: %s", err.Error())
+		logrus.Fatalf("failed to connect db: %s", err.Error())
 	}
 
 	repos := repository.NewRepository(db)

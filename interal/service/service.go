@@ -1,8 +1,12 @@
 package service
 
-import "github.com/DavidG9999/my_test_app/interal/repository"
+import (
+	"github.com/DavidG9999/my_test_app/interal/entity"
+	"github.com/DavidG9999/my_test_app/interal/repository"
+)
 
 type Authorization interface {
+	CreateUser(user entity.User) (int, error)
 }
 
 type AutoService interface {
@@ -37,6 +41,8 @@ type Service struct {
 	PutlistService
 }
 
-func NewService(repo *repository.Repository) *Service {
-	return &Service{}
+func NewService(repos *repository.Repository) *Service {
+	return &Service{
+		Authorization: NewAuthService(repos.Authorization),
+	}
 }
