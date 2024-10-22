@@ -7,6 +7,12 @@ import (
 
 type Authorization interface {
 	CreateUser(user entity.User) (int, error)
+	GenerateToken(email, password string) (string, error)
+	ParseToken(accessToken string) (int, error)
+}
+
+type UserService interface{
+	
 }
 
 type AutoService interface {
@@ -32,6 +38,7 @@ type PutlistService interface {
 
 type Service struct {
 	Authorization
+	UserService
 	AutoService
 	ContragentService
 	DispetcherService

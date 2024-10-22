@@ -1,3 +1,5 @@
+DROP TABLE  users_putlists;
+
 DROP TABLE users;
 
 DROP TABLE putlist_bodies;

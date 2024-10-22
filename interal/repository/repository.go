@@ -8,6 +8,10 @@ import (
 
 type Authorization interface {
 	CreateUSer(user entity.User) (int, error)
+	GetUser(email, password string) (entity.User, error)
+}
+
+type UserRepository interface {
 }
 
 type AutoRepository interface {
@@ -33,6 +37,7 @@ type PutlistRepository interface {
 
 type Repository struct {
 	Authorization
+	UserRepository
 	AutoRepository
 	ContragentRepository
 	DispetcherRepository

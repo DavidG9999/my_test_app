@@ -87,3 +87,10 @@ CREATE TABLE
         time_with timestamp not null,
         time_for timestamp not null
     );
+
+CREATE TABLE
+    users_putlists (
+        id serial primary key not null unique,
+        user_id int references users (id) on delete cascade on update cascade not null,
+        putlist_header_id int references putlist_headers (id) on delete cascade on update cascade not null
+    );
