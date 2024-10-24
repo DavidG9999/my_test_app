@@ -7,17 +7,18 @@ import (
 )
 
 const (
-	usersTable = "users"
-	accountsTable = "accounts"
-	autosTable = "autos"
-	contragentsTable = "contragents"
-	dispetchersTable = "dispetchers"
-	driversTable = "drivers"
-	itemsTable = "items"
-	mechanicsTable = "mechanics"
-	organizationsTable = "organizations"
+	usersTable          = "users"
+	accountsTable       = "accounts"
+	autosTable          = "autos"
+	contragentsTable    = "contragents"
+	dispetchersTable    = "dispetchers"
+	driversTable        = "drivers"
+	itemsTable          = "items"
+	mechanicsTable      = "mechanics"
+	organizationsTable  = "organizations"
 	putlistHeadersTable = "putlist_headers"
-	putlistBodiesTable = "putlist_bodies"
+	putlistBodiesTable  = "putlist_bodies"
+	usersPutlistsTable  = "users_putlists"
 )
 
 type Config struct {

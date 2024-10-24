@@ -15,6 +15,11 @@ type UserRepository interface {
 }
 
 type AutoRepository interface {
+	CreateAuto(auto entity.Auto) (entity.Auto, error)
+	GetAutos() ([]entity.Auto, error)
+	GetAutoByStateNumber(stateNumber string) (entity.Auto, error)
+	UpdateAuto(autoId int, updareData entity.UpdateAutoInput) (entity.Auto, error)
+	DeleteAuto(autoId int) error
 }
 
 type ContragentRepository interface {
@@ -49,6 +54,7 @@ type Repository struct {
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Authorization: postgres.NewAuthPostgres(db),
+		Authorization:  postgres.NewAuthPostgres(db),
+		AutoRepository: postgres.NewAutoPostgres(db),
 	}
 }

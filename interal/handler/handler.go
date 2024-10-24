@@ -25,16 +25,17 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		user := api.Group("/user")
 		{
-			user.GET("/id", h.getUserId)
+			user.GET("/id", h.getIdUser)
 			user.GET("/", h.getUser)
-			user.PUT("/", h.updateUser)
+			user.PUT("/name", h.updateName)
+			user.PUT("/password", h.updatePassword)
 			user.DELETE("/", h.deleteUser)
 		}
 		autos := api.Group("/autos")
 		{
 			autos.POST("/", h.createAuto)
 			autos.GET("/", h.getAutos)
-			autos.GET("/:id", h.getAutoById)
+			autos.GET("/:state_number", h.getAutoByStateNumber)
 			autos.PUT("/:id", h.updateAuto)
 			autos.DELETE("/:id", h.deleteAuto)
 		}

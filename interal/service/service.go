@@ -11,45 +11,50 @@ type Authorization interface {
 	ParseToken(accessToken string) (int, error)
 }
 
-type UserService interface{
-	
+type User interface {
 }
 
-type AutoService interface {
+type Auto interface {
+	CreateAuto(auto entity.Auto) (entity.Auto, error)
+	GetAutos() ([]entity.Auto, error)
+	GetAutoByStateNumber(stateNumber string) (entity.Auto, error)
+	UpdateAuto(autoId int, updateData entity.UpdateAutoInput) (entity.Auto, error)
+	DeleteAuto(autoId int) error
 }
 
-type ContragentService interface {
+type Contragent interface {
 }
 
-type DispetcherService interface {
+type Dispetcher interface {
 }
 
-type DriverService interface {
+type Driver interface {
 }
 
-type MechanicService interface {
+type Mechanic interface {
 }
 
-type Organizationservice interface {
+type Organization interface {
 }
 
-type PutlistService interface {
+type Putlist interface {
 }
 
 type Service struct {
 	Authorization
-	UserService
-	AutoService
-	ContragentService
-	DispetcherService
-	DriverService
-	MechanicService
-	Organizationservice
-	PutlistService
+	User
+	Auto
+	Contragent
+	Dispetcher
+	Driver
+	Mechanic
+	Organization
+	Putlist
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
+		Auto:          NewAutoService(repos.AutoRepository),
 	}
 }
