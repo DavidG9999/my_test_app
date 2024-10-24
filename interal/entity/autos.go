@@ -19,8 +19,10 @@ func (i UpdateAutoInput) Validate() error {
 	if i.Brand == nil && i.Model == nil && i.StateNumber == nil {
 		return errors.New("update structure has no values")
 	}
-	if i.StateNumber != nil && len(*i.StateNumber) > 9 || len(*i.StateNumber) < 8  {
-		return errors.New("invalid state_number param")
+	if i.StateNumber != nil {
+		if len(*i.StateNumber) > 12 || len(*i.StateNumber) < 8 {
+			return errors.New("invalid state_number param")
+		}
 	}
 	return nil
 }

@@ -1,14 +1,14 @@
 DROP TABLE  users_putlists;
 
-DROP TABLE users;
-
 DROP TABLE putlist_bodies;
 
 DROP TABLE putlist_headers;
 
+DROP TABLE accounts;
+
 DROP TABLE organizations;
 
-DROP TABLE accounts;
+DROP TABLE users;
 
 DROP TABLE autos;
 

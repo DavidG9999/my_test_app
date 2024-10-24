@@ -80,11 +80,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			mehanics.PUT("/:id", h.updateMechanic)
 			mehanics.DELETE("/:id", h.deleteMechanic)
 		}
-		organiations := api.Group("/organiations")
+		organiations := api.Group("/organizations")
 		{
 			organiations.POST("/", h.createOrganization)
 			organiations.GET("/", h.getOrganizations)
 			organiations.GET("/:id", h.getOrganizationById)
+			organiations.GET("/inn_kpp/:inn_kpp", h.getOrganizationByInnKpp)
 			organiations.PUT("/:id", h.updateOrganization)
 			organiations.DELETE("/:id", h.deleteOrganization)
 
@@ -92,7 +93,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			{
 				accounts.POST("/", h.createAccount)
 				accounts.GET("/", h.getAccounts)
-				accounts.GET("/:account_id", h.getAccountById)
+				accounts.GET("/account_number/:account_number", h.getAccountByAccountNumber)
 				accounts.PUT("/:account_id", h.updateAccount)
 				accounts.DELETE("/:account_id", h.deleteAccount)
 			}
