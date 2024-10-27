@@ -15,16 +15,12 @@ func NewAccountService(repo repository.AccountRepository) *AccountService {
 	}
 }
 
-func (s *AccountService) CreateAccount(account entity.Account) (entity.Account, error) {
-	return s.repo.CreateAccount(account)
+func (s *AccountService) CreateAccount(organizationId int, account entity.Account) (entity.Account, error) {
+	return s.repo.CreateAccount(organizationId, account)
 }
 
-func (s *AccountService) GetAccounts() ([]entity.Account, error) {
-	return s.repo.GetAccounts()
-}
-
-func (s *AccountService) GetAccountByAccountNumber(accountNumber string) (entity.Account, error) {
-	return s.repo.GetAccountByAccountNumber(accountNumber)
+func (s *AccountService) GetAccounts(organizationId int) (entity.Organization, []entity.Account, error) {
+	return s.repo.GetAccounts(organizationId)
 }
 
 func (s *AccountService) UpdateAccount(accountId int, updateData entity.UpdateAccountInput) (entity.Account, error) {

@@ -23,14 +23,6 @@ func (s *OrganizationService) GetOrganizations() ([]entity.Organization, error) 
 	return s.repos.GetOrganizations()
 }
 
-func (s *OrganizationService) GetOrganizationById(organizationId int) (entity.Organization, error) {
-	return s.repos.GetOrganizationById(organizationId)
-}
-
-func (s *OrganizationService) GetOrganizationByInnKpp(innKpp string) (entity.Organization, error) {
-	return s.repos.GetOrganizationByInnKpp(innKpp)
-}
-
 func (s *OrganizationService) UpdateOrganization(organizationId int, updateData entity.UpdateOrganizationInput) (entity.Organization, error) {
 	err := updateData.Validate()
 	if err != nil {

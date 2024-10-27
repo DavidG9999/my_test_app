@@ -23,10 +23,6 @@ func (s *AutoService) GetAutos() ([]entity.Auto, error) {
 	return s.repo.GetAutos()
 }
 
-func (s *AutoService) GetAutoByStateNumber(stateNumber string) (entity.Auto, error) {
-	return s.repo.GetAutoByStateNumber(stateNumber)
-}
-
 func (s *AutoService) UpdateAuto(autoId int, updateData entity.UpdateAutoInput) (entity.Auto, error) {
 	err := updateData.Validate()
 	if err != nil {

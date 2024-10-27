@@ -28,5 +28,25 @@ func (i UpdateOrganizationInput) Validate() error {
 			return errors.New("invalid field format: inn_kpp")
 		}
 	}
+	if i.Name != nil {
+		if *i.Name == "" {
+			return errors.New("update structure has empty values")
+		}
+	}
+	if i.Address != nil {
+		if *i.Address == "" {
+			return errors.New("update structure has empty values")
+		}
+	}
+	if i.Chief != nil {
+		if *i.Chief == "" {
+			return errors.New("update structure has empty values")
+		}
+	}
+	if i.FinancialChief != nil {
+		if *i.FinancialChief == "" {
+			return errors.New("update structure has empty values")
+		}
+	}
 	return nil
 }

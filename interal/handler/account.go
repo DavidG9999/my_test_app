@@ -13,58 +13,47 @@ type createAccountResponse struct {
 }
 
 func (h *Handler) createAccount(c *gin.Context) {
+	organiationId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "invalid organization_id param")
+	}
+
 	var input entity.Account
 	if err := c.BindJSON(&input); err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	account, err := h.services.Account.CreateAccount(input)
+	account, err := h.services.Account.CreateAccount(organiationId, input)
 	if err != nil {
 		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
+
 	c.JSON(http.StatusOK, createAccountResponse{
 		Account: account,
 	})
 }
 
 type getAccountsResponse struct {
-	Accounts []entity.Account `json:"accounts"`
+	Organization entity.Organization `json:"organization"`
+	Accounts     []entity.Account    `json:"accounts"`
 }
 
 func (h *Handler) getAccounts(c *gin.Context) {
-	accounts, err := h.services.Account.GetAccounts()
+	organizationId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, "invalid organization_id param")
+	}
+	organization, accounts, err := h.services.Account.GetAccounts(organizationId)
 	if err != nil {
 		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	c.JSON(http.StatusOK, getAccountsResponse{
-		Accounts: accounts,
-	})
-}
-
-type getAccountByAccountNumberResponse struct {
-	Account entity.Account
-}
-
-func (h *Handler) getAccountByAccountNumber(c *gin.Context) {
-	account_number := c.Param("account_number")
-
-	if len(account_number) != 20 {
-		NewErrorResponse(c, http.StatusBadRequest, "invalid account_number param")
-		return
-	}
-
-	account, err := h.services.Account.GetAccountByAccountNumber(account_number)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, getAccountByAccountNumberResponse{
-		Account: account,
+		Organization: organization,
+		Accounts:     accounts,
 	})
 }
 

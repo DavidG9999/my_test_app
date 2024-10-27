@@ -33,3 +33,34 @@ func (r *AuthPostgres) GetUser(email, password string) (entity.User, error) {
 	return user, err
 
 }
+
+func (r *AuthPostgres) GetUserById(id int) (entity.User, error) {
+	var user entity.User
+	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", usersTable)
+	err := r.db.Get(&user, query, id)
+
+	return user, err
+
+}
+
+func (r *AuthPostgres) UpdateName(id int, updateData entity.UpdateNameUserInput) (entity.User, error) {
+	var updateUser entity.User
+
+	query := fmt.Sprintf("UPDATE %s SET name=$1 WHERE id=$2 RETURNING name, email, password_hash", usersTable)
+	err := r.db.Get(&updateUser, query, updateData.Name, id)
+	return updateUser, err
+}
+
+func (r *AuthPostgres) UpdatePassword(id int, updateData entity.UpdatePasswordUserInput) (entity.User, error) {
+	var updateUser entity.User
+
+	query := fmt.Sprintf("UPDATE %s SET password_hash=$1 WHERE id=$2 RETURNING name, email, password_hash", usersTable)
+	err := r.db.Get(&updateUser, query, updateData.Password, id)
+	return updateUser, err
+}
+
+func (r *AuthPostgres) DeleteUser(id int) error {
+	query := fmt.Sprintf("DELETE FROM %s WHERE id = $1", usersTable)
+	_, err := r.db.Exec(query, id)
+	return err
+}

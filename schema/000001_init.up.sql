@@ -15,7 +15,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    contagents (
+    contragents (
         id serial primary key not null unique,
         name varchar(255) not null,
         address varchar(255) not null,
@@ -34,12 +34,6 @@ CREATE TABLE
         full_name varchar(255) not null,
         license varchar(10) not null unique,
         class varchar(255) not null
-    );
-
-CREATE TABLE
-    items (
-        id serial primary key not null unique,
-        name varchar(255) not null
     );
 
 CREATE TABLE
@@ -70,7 +64,9 @@ CREATE TABLE
 CREATE TABLE
     putlist_headers (
         id serial primary key not null unique,
-        number int not null,
+        user_id int references users (id) on delete cascade on update cascade not null,
+        number int not null unique,
+        account_id int references accounts (id) on delete cascade on update cascade not null,
         date_with date not null,
         date_for date not null,
         auto_id int references autos (id) on delete cascade on update cascade not null,
@@ -82,16 +78,10 @@ CREATE TABLE
 CREATE TABLE
     putlist_bodies (
         id serial primary key not null unique,
-        putlist_header_id int references putlist_headers (id) on delete cascade on update cascade not null,
-        contagent_id int references contagents (id) on delete cascade on update cascade not null,
-        item_id int references items (id) on delete cascade on update cascade not null,
+        putlist_header_number int references putlist_headers (number) on delete cascade on update cascade not null,
+        number int int not null,
+        contragent_id int references contragents (id) on delete cascade on update cascade not null,
+        item varchar(255) not null,
         time_with timestamp not null,
         time_for timestamp not null
-    );
-
-CREATE TABLE
-    users_putlists (
-        id serial primary key not null unique,
-        user_id int references users (id) on delete cascade on update cascade not null,
-        putlist_header_id int references putlist_headers (id) on delete cascade on update cascade not null
     );

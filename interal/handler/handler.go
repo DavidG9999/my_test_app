@@ -25,7 +25,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		user := api.Group("/user")
 		{
-			user.GET("/id", h.getIdUser)
 			user.GET("/", h.getUser)
 			user.PUT("/name", h.updateName)
 			user.PUT("/password", h.updatePassword)
@@ -35,7 +34,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			autos.POST("/", h.createAuto)
 			autos.GET("/", h.getAutos)
-			autos.GET("/:state_number", h.getAutoByStateNumber)
 			autos.PUT("/:id", h.updateAuto)
 			autos.DELETE("/:id", h.deleteAuto)
 		}
@@ -43,24 +41,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			contragents.POST("/", h.createContragent)
 			contragents.GET("/", h.getContragents)
-			contragents.GET("/:id", h.getContragentById)
 			contragents.PUT("/:id", h.updateContragent)
 			contragents.DELETE("/:id", h.deleteContragent)
 
-			items := contragents.Group(":id/items")
-			{
-				items.POST("/", h.createItem)
-				items.GET("/", h.getItems)
-				items.GET("/:item_id", h.getItemById)
-				items.PUT("/:item_id", h.updateItem)
-				items.DELETE("/:item_id", h.deleteItem)
-			}
 		}
 		dispetchers := api.Group("/dispetchers")
 		{
 			dispetchers.POST("/", h.createDispetcher)
 			dispetchers.GET("/", h.getDispetchers)
-			dispetchers.GET("/:id", h.getDispetcherById)
 			dispetchers.PUT("/:id", h.updateDispetcher)
 			dispetchers.DELETE("/:id", h.deleteDispetcher)
 		}
@@ -68,7 +56,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			drivers.POST("/", h.createDriver)
 			drivers.GET("/", h.getDrivers)
-			drivers.GET("/:id", h.getDriverById)
 			drivers.PUT("/:id", h.updateDriver)
 			drivers.DELETE("/:id", h.deleteDriver)
 		}
@@ -76,7 +63,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			mehanics.POST("/", h.createMechanic)
 			mehanics.GET("/", h.getMechanics)
-			mehanics.GET("/:id", h.getMechanicById)
 			mehanics.PUT("/:id", h.updateMechanic)
 			mehanics.DELETE("/:id", h.deleteMechanic)
 		}
@@ -84,8 +70,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			organiations.POST("/", h.createOrganization)
 			organiations.GET("/", h.getOrganizations)
-			organiations.GET("/:id", h.getOrganizationById)
-			organiations.GET("/inn_kpp/:inn_kpp", h.getOrganizationByInnKpp)
 			organiations.PUT("/:id", h.updateOrganization)
 			organiations.DELETE("/:id", h.deleteOrganization)
 
@@ -93,7 +77,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			{
 				accounts.POST("/", h.createAccount)
 				accounts.GET("/", h.getAccounts)
-				accounts.GET("/account_number/:account_number", h.getAccountByAccountNumber)
 				accounts.PUT("/:account_id", h.updateAccount)
 				accounts.DELETE("/:account_id", h.deleteAccount)
 			}
@@ -101,16 +84,15 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		putlists := api.Group("/putlists")
 		{
 			putlists.POST("/", h.createPutlistHeader)
-			putlists.GET("/", h.getPutlistHeaders)
-			putlists.GET("/:id", h.getPutlistHeaderById)
-			putlists.PUT("/:id", h.updatePutlistHeader)
-			putlists.DELETE("/:id", h.deletePutlistHeader)
+			putlists.GET("/", h.getPutlists)
+			putlists.GET("/:number", h.getPutlistHeaderByNumber)
+			putlists.PUT("/:number", h.updatePutlistHeader)
+			putlists.DELETE("/:number", h.deletePutlistHeader)
 
-			putlist_bodies := putlists.Group(":id/putlists")
+			putlist_bodies := putlists.Group(":number/putlist_bodies")
 			{
 				putlist_bodies.POST("/", h.createPutlistBody)
 				putlist_bodies.GET("/", h.getPutlistBodies)
-				putlist_bodies.GET("/:putlist_body_id", h.getPutlistBodyById)
 				putlist_bodies.PUT("/:putlist_body_id", h.updatePutlistBody)
 				putlist_bodies.DELETE("/:putlist_body_id", h.deletePutlistBody)
 

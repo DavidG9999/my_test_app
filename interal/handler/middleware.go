@@ -32,6 +32,7 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	}
 
 	c.Set(userCtx, userId)
+
 }
 
 func getUserId(c *gin.Context) (int, error) {

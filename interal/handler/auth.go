@@ -49,3 +49,81 @@ func (h *Handler) signIn(c *gin.Context) {
 		"token": token,
 	})
 }
+
+func (h *Handler) getUser(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	user, err := h.services.Authorization.GetUserById(userId)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+
+	c.JSON(http.StatusOK, user)
+
+}
+
+func (h *Handler) updateName(c *gin.Context) {
+	var updateData entity.UpdateNameUserInput
+	if err := c.BindJSON(&updateData); err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	updateUser, err := h.services.Authorization.UpdateName(userId, updateData)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, updateUser)
+}
+
+func (h *Handler) updatePassword(c *gin.Context) {
+	var updateData entity.UpdatePasswordUserInput
+	if err := c.BindJSON(&updateData); err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	updateUser, err := h.services.Authorization.UpdatePassword(userId, updateData)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, updateUser)
+
+}
+
+func (h *Handler) deleteUser(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	err = h.services.Authorization.DeleteUser(userId)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+
+	
+}
+

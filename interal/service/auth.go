@@ -14,7 +14,7 @@ import (
 const (
 	salt       = "dkfro44o5o2x56hjjks"
 	signingKey = "kfkmggffkds1#dgfgf#DLDL"
-	tokenTTL   = 12 * time.Hour
+	tokenTTL   = 3 * time.Hour
 )
 
 type tokenClaims struct {
@@ -65,6 +65,32 @@ func (s *AuthService) ParseToken(accessToken string) (int, error) {
 		return 0, errors.New("token claims are not of type *tokenClaims")
 	}
 	return claims.UserId, nil
+}
+
+func (s *AuthService) GetUserById(id int) (entity.User, error) {
+	return s.repo.GetUserById(id)
+
+}
+
+func (s *AuthService) UpdateName(id int, updateData entity.UpdateNameUserInput) (entity.User, error) {
+	err := updateData.Validate()
+	if err != nil {
+		return entity.User{}, err
+	}
+	return s.repo.UpdateName(id, updateData)
+}
+
+func (s *AuthService) UpdatePassword(id int, updateData entity.UpdatePasswordUserInput) (entity.User, error) {
+	err := updateData.Validate()
+	if err != nil {
+		return entity.User{}, err
+	}
+	*updateData.Password = s.generatePasswordHash(*updateData.Password)
+	return s.repo.UpdatePassword(id, updateData)
+}
+
+func (s *AuthService) DeleteUser(id int) error {
+	return s.repo.DeleteUser(id)
 }
 
 func (s *AuthService) generatePasswordHash(password string) string {

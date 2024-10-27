@@ -19,27 +19,38 @@ func NewAccountPostgres(db *sqlx.DB) *AccountPostgres {
 	}
 }
 
-func (r *AccountPostgres) CreateAccount(account entity.Account) (entity.Account, error) {
-	query := fmt.Sprintf("INSERT INTO %s (account_number, bank_name, bank_id_number) VALUES ($1, $2, $3) RETURNING id, account_number, bank_name, bank_id_number", accountsTable)
-	row := r.db.QueryRow(query, account.AccountNumber, account.BankName, account.BankIdNumber)
-	if err := row.Scan(&account.Id, &account.AccountNumber, &account.BankName, &account.BankIdNumber); err != nil {
+func (r *AccountPostgres) CreateAccount(organizationId int, account entity.Account) (entity.Account, error) {
+	query := fmt.Sprintf("INSERT INTO %s (account_number, bank_name, bank_id_number, organization_id) VALUES ($1, $2, $3, $4) RETURNING id, account_number, bank_name, bank_id_number, organization_id", accountsTable)
+	row := r.db.QueryRow(query, account.AccountNumber, account.BankName, account.BankIdNumber, organizationId)
+	if err := row.Scan(&account.Id, &account.AccountNumber, &account.BankName, &account.BankIdNumber, &account.OrganizationId); err != nil {
 		return entity.Account{}, err
 	}
 	return account, nil
 }
 
-func (r *AccountPostgres) GetAccounts() ([]entity.Account, error) {
-	var accounts []entity.Account
-	query := fmt.Sprintf("SELECT * FROM %s", accountsTable)
-	err := r.db.Select(&accounts, query)
-	return accounts, err
-}
+func (r *AccountPostgres) GetAccounts(organizationId int) (entity.Organization, []entity.Account, error) {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return entity.Organization{}, []entity.Account{}, nil
+	}
 
-func (r *AccountPostgres) GetAccountByAccountNumber(accountNumber string) (entity.Account, error) {
-	var account entity.Account
-	query := fmt.Sprintf("SELECT * FROM %s WHERE account_number = $1", accountsTable)
-	err := r.db.Get(&account, query, accountNumber)
-	return account, err
+	var organization entity.Organization
+	getOrganizationQuery := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", organizationsTable)
+	err = r.db.Get(&organization, getOrganizationQuery, organizationId)
+	if err != nil {
+		tx.Rollback()
+		return entity.Organization{}, []entity.Account{}, nil
+	}
+
+	var accounts []entity.Account
+	getAccountsQuery := fmt.Sprintf("SELECT * FROM %s WHERE organization_id=$1", accountsTable)
+	err = r.db.Select(&accounts, getAccountsQuery, organizationId)
+	if err != nil {
+		tx.Rollback()
+		return entity.Organization{}, []entity.Account{}, nil
+	}
+
+	return organization, accounts, nil
 }
 
 func (r *AccountPostgres) UpdateAccount(accountId int, updateData entity.UpdateAccountInput) (entity.Account, error) {
@@ -65,7 +76,7 @@ func (r *AccountPostgres) UpdateAccount(accountId int, updateData entity.UpdateA
 	}
 	setQuery := strings.Join(setValues, ", ")
 
-	query := fmt.Sprintf("UPDATE %s SET %s WHERE id=$%d RETURNING id, account_number, bank_name, bank_id_number", accountsTable, setQuery, argId)
+	query := fmt.Sprintf("UPDATE %s SET %s WHERE id=$%d RETURNING id, account_number, bank_name, bank_id_number, organization_id", accountsTable, setQuery, argId)
 	args = append(args, accountId)
 
 	logrus.Debugf("updateQuery: %s", query)
@@ -77,7 +88,7 @@ func (r *AccountPostgres) UpdateAccount(accountId int, updateData entity.UpdateA
 }
 
 func (r *AccountPostgres) DeleteAccount(accountId int) error {
-	query := fmt.Sprintf("DELETE FROM %s WHERE account_id = $1", accountsTable)
+	query := fmt.Sprintf("DELETE FROM %s WHERE id = $1", accountsTable)
 	_, err := r.db.Exec(query, accountId)
 	return err
 }

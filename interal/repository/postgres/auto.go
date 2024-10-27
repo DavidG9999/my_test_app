@@ -35,14 +35,6 @@ func (r *AutoPostgres) GetAutos() ([]entity.Auto, error) {
 	return autos, err
 }
 
-func (r *AutoPostgres) GetAutoByStateNumber(stateNumber string) (entity.Auto, error) {
-	var auto entity.Auto
-	query := fmt.Sprintf("SELECT * FROM %s WHERE state_number = $1", autosTable)
-	err := r.db.Get(&auto, query, stateNumber)
-	return auto, err
-
-}
-
 func (r *AutoPostgres) UpdateAuto(autoId int, updateData entity.UpdateAutoInput) (entity.Auto, error) {
 	var updateAuto entity.Auto
 

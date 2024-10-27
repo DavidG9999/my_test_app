@@ -47,30 +47,6 @@ func (h *Handler) getAutos(c *gin.Context) {
 	})
 }
 
-type getAutoByStateNumberResponse struct {
-	Auto entity.Auto
-}
-
-func (h *Handler) getAutoByStateNumber(c *gin.Context) {
-	input := c.Param("state_number")
-
-	if len(input) > 9 || len(input) < 8 {
-		NewErrorResponse(c, http.StatusBadRequest, "invalid state_number param")
-		return
-	}
-
-	auto, err := h.services.Auto.GetAutoByStateNumber(input)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK, getAutoByStateNumberResponse{
-		Auto: auto,
-	})
-
-
-}
 
 type updateAutoResponse struct {
 	Auto entity.Auto

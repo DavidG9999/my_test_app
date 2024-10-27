@@ -35,19 +35,6 @@ func (r *OrganizationPostgres) GetOrganizations() ([]entity.Organization, error)
 	return organizations, err
 }
 
-func (r *OrganizationPostgres) GetOrganizationById(organizationId int) (entity.Organization, error) {
-	var organization entity.Organization
-	query := fmt.Sprintf("SELECT * FROM %s WHERE id=$1", organizationsTable)
-	err := r.db.Get(&organization, query, organizationId)
-	return organization, err
-}
-
-func (r *OrganizationPostgres) GetOrganizationByInnKpp(innKpp string) (entity.Organization, error) {
-	var organization entity.Organization
-	query := fmt.Sprintf("SELECT * FROM %s WHERE inn_kpp=$1", organizationsTable)
-	err := r.db.Get(&organization, query, innKpp)
-	return organization, err
-}
 
 func (r *OrganizationPostgres) UpdateOrganization(organizationId int, updateData entity.UpdateOrganizationInput) (entity.Organization, error) {
 	var updateOrganization entity.Organization

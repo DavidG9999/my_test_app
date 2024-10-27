@@ -43,47 +43,6 @@ func (h *Handler) getOrganizations(c *gin.Context) {
 	})
 }
 
-type getOrganizationByIdResponse struct {
-	Organization entity.Organization `json:"organization"`
-}
-
-func (h *Handler) getOrganizationById(c *gin.Context) {
-	organiationId, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		NewErrorResponse(c, http.StatusBadRequest, "invalid id param")
-		return
-	}
-	organization, err := h.services.Organization.GetOrganizationById(organiationId)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	c.JSON(http.StatusOK, getOrganizationByIdResponse{
-		Organization: organization,
-	})
-}
-
-type getOrganizationByInnKppResponse struct {
-	Organization entity.Organization `json:"organization"`
-}
-
-func (h *Handler) getOrganizationByInnKpp(c *gin.Context) {
-	innKpp := c.Param("inn_kpp")
-
-	if len(innKpp) != 20 {
-		NewErrorResponse(c, http.StatusBadRequest, "invalid inn_kpp param")
-		return
-	}
-	organization, err := h.services.Organization.GetOrganizationByInnKpp(innKpp)
-	if err != nil {
-		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
-		return
-	}
-	c.JSON(http.StatusOK, getOrganizationByInnKppResponse{
-		Organization: organization,
-	})
-}
-
 type updateOrganizationResponse struct {
 	Organization entity.Organization `json:"update_organization"`
 }

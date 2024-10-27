@@ -24,5 +24,15 @@ func (i UpdateAutoInput) Validate() error {
 			return errors.New("invalid state_number param")
 		}
 	}
+	if i.Brand != nil {
+		if *i.Brand == "" {
+			return errors.New("update structure has empty values")
+		}
+	}
+	if i.Model != nil {
+		if *i.Model == "" {
+			return errors.New("update structure has empty values")
+		}
+	}
 	return nil
 }
