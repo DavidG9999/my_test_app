@@ -28,11 +28,11 @@ func (r *PutlistBodyPostgres) CreatePutlistBody(putlistNumber int, putlistBody e
 	return putlistBody, nil
 }
 
-func (r *PutlistBodyPostgres) GetPutlistBodies(putlistId int) ([]entity.GetPutlistBodyResponse, error) {
+func (r *PutlistBodyPostgres) GetPutlistBodies(putlistNumber int) ([]entity.GetPutlistBodyResponse, error) {
 	var putlistBodies []entity.GetPutlistBodyResponse
 
 	query := fmt.Sprintf("SELECT pb.id, pb.putlist_header_number AS putlist_number, pb.number AS putlist_body_number, cnt.name AS contragent, cnt.address AS contragent_address, cnt.inn_kpp AS contragent_inn_kpp, pb.item, pb.time_with, pb.time_for FROM %s AS pb JOIN %s AS cnt ON pb.contragent_id = cnt.id WHERE putlist_header_number = $1", putlistBodiesTable, contragentsTable)
-	err := r.db.Select(&putlistBodies, query, putlistId)
+	err := r.db.Select(&putlistBodies, query, putlistNumber)
 	if err != nil {
 		return []entity.GetPutlistBodyResponse{}, err
 	}

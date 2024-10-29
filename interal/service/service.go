@@ -65,12 +65,12 @@ type Account interface {
 }
 type Putlist interface {
 	CreatePutlist(userId int, putlist entity.PutlistHeader) (entity.PutlistHeader, error)
-	GetPutlists(userId int) ([]entity.GetPutlistResponse, error)
+	GetPutlistHeaders(userId int) ([]entity.GetPutlistResponse, error)
 	GetPutlistByNumber(userId int, putlistNumber int) (entity.GetPutlistResponse, []entity.GetPutlistBodyResponse, error)
 	UpdatePutlist(userId int, putlistNumber int, updateData entity.UpdatePutlistHeaderInput) (entity.PutlistHeader, error)
 	DeletePutlist(userId int, putlistNumber int) error
-	CreatePutlistBody(putlistId int, putlistBody entity.PutlistBody) (entity.PutlistBody, error)
-	GetPutlistBodies(putlistId int) ([]entity.GetPutlistBodyResponse, error)
+	CreatePutlistBody(putlistNumber int, putlistBody entity.PutlistBody) (entity.PutlistBody, error)
+	GetPutlistBodies(putlistNumber int) ([]entity.GetPutlistBodyResponse, error)
 	UpdatePutlistBody(putlistBodyId int, updateData entity.UpdatePutlistBodyInput) (entity.PutlistBody, error)
 	DeletePutlistBody(putlistBodyId int) error
 }

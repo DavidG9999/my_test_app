@@ -21,8 +21,8 @@ func (s *PutlistService) CreatePutlist(userId int, putlist entity.PutlistHeader)
 	return s.repo.CreatePutlist(userId, putlist)
 }
 
-func (s *PutlistService) GetPutlists(userId int) ([]entity.GetPutlistResponse, error) {
-	return s.repo.GetPutlists(userId)
+func (s *PutlistService) GetPutlistHeaders(userId int) ([]entity.GetPutlistResponse, error) {
+	return s.repo.GetPutlistHeaders(userId)
 }
 
 func (s *PutlistService) GetPutlistByNumber(userId int, putlistNumber int) (entity.GetPutlistResponse, []entity.GetPutlistBodyResponse, error) {
@@ -42,12 +42,12 @@ func (s *PutlistService) DeletePutlist(userId int, putlistNumber int) error {
 	return s.repo.DeletePutlist(userId, putlistNumber)
 }
 
-func (s *PutlistService) CreatePutlistBody(putlistId int, putlistBody entity.PutlistBody) (entity.PutlistBody, error) {
-	return s.repoBody.CreatePutlistBody(putlistId, putlistBody)
+func (s *PutlistService) CreatePutlistBody(putlistNumber int, putlistBody entity.PutlistBody) (entity.PutlistBody, error) {
+	return s.repoBody.CreatePutlistBody(putlistNumber, putlistBody)
 }
 
-func (s *PutlistService) GetPutlistBodies(putlistId int) ([]entity.GetPutlistBodyResponse, error) {
-	return s.repoBody.GetPutlistBodies(putlistId)
+func (s *PutlistService) GetPutlistBodies(putlistNumber int) ([]entity.GetPutlistBodyResponse, error) {
+	return s.repoBody.GetPutlistBodies(putlistNumber)
 }
 
 func (s *PutlistService) UpdatePutlistBody(putlistBodyId int, updateData entity.UpdatePutlistBodyInput) (entity.PutlistBody, error) {

@@ -3,6 +3,11 @@ package handler
 import (
 	"github.com/DavidG9999/my_test_app/interal/service"
 	"github.com/gin-gonic/gin"
+
+	_ "github.com/DavidG9999/my_test_app/docs"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Handler struct {
@@ -15,6 +20,8 @@ func NewHandler(services *service.Service) *Handler {
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
+
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	auth := router.Group("/auth")
 	{
@@ -84,8 +91,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		putlists := api.Group("/putlists")
 		{
 			putlists.POST("/", h.createPutlistHeader)
-			putlists.GET("/", h.getPutlists)
-			putlists.GET("/:number", h.getPutlistHeaderByNumber)
+			putlists.GET("/", h.getPutlistHeaders)
+			putlists.GET("/:number", h.getPutlistByNumber)
 			putlists.PUT("/:number", h.updatePutlistHeader)
 			putlists.DELETE("/:number", h.deletePutlistHeader)
 

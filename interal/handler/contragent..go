@@ -12,6 +12,19 @@ type createContragentResponse struct {
 	Contragent entity.Contragent `json:"contragent"`
 }
 
+// @Summary Create Contragent
+// @Security ApiKeyAuth
+// @Tags contragents
+// @Description creates data about the contragent
+// @ID create-contragent
+// @Accept json
+// @Produce json
+// @Param input body entity.Contragent true "contragent info"
+// @Success 200 {object} createContragentResponse "new account"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /contragent [post]
 func (h *Handler) createContragent(c *gin.Context) {
 	var input entity.Contragent
 	if err := c.BindJSON(&input); err != nil {
@@ -28,10 +41,23 @@ func (h *Handler) createContragent(c *gin.Context) {
 	})
 }
 
+
 type getContragentsResponse struct {
 	Contragents []entity.Contragent `json:"contragents"`
 }
 
+// @Summary Get Contragents
+// @Security ApiKeyAuth
+// @Tags contragents
+// @Description gets data about all contragents
+// @ID get-contragents
+// @Accept json
+// @Produce json
+// @Success 200 {object} getContragentsResponse "contragents info"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /contragents [get]
 func (h *Handler) getContragents(c *gin.Context) {
 	contragents, err := h.services.Contragent.GetContragents()
 	if err != nil {
@@ -43,10 +69,25 @@ func (h *Handler) getContragents(c *gin.Context) {
 	})
 }
 
+
 type updateContragentResponse struct {
 	Contragent entity.Contragent `json:"update_contragent"`
 }
 
+// @Summary Update Contragent
+// @Security ApiKeyAuth
+// @Tags contragents
+// @Description updates data about the contragent
+// @ID update-contragent
+// @Accept json
+// @Produce json
+// @Param contragent_id body integer true "contragent id"
+// @Param updateData body entity.UpdateContragentInput true "update contragent info"
+// @Success 200 {object} updateContragentResponse "updated contragent"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /contragents/{contragent_id} [put]
 func (h *Handler) updateContragent(c *gin.Context) {
 	contragentId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -70,6 +111,19 @@ func (h *Handler) updateContragent(c *gin.Context) {
 	})
 }
 
+// @Summary Delete Contragent
+// @Security ApiKeyAuth
+// @Tags contragents
+// @Description deletes data about contragent
+// @ID delete-contragent
+// @Accept json
+// @Produce json
+// @Param contragent_id path integer true "contragent id"
+// @Success 200 {object} statusResponse "ok"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /contragents/{contragent_id} [delete]
 func (h *Handler) deleteContragent(c *gin.Context) {
 	contragentId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

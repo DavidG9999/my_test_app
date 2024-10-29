@@ -28,7 +28,7 @@ func (r *PutlistPostgres) CreatePutlist(userId int, putlist entity.PutlistHeader
 	return putlist, nil
 }
 
-func (r *PutlistPostgres) GetPutlists(userId int) ([]entity.GetPutlistResponse, error) {
+func (r *PutlistPostgres) GetPutlistHeaders(userId int) ([]entity.GetPutlistResponse, error) {
 	var putlists []entity.GetPutlistResponse
 
 	query := fmt.Sprintf("SELECT ph.number, org.name AS organization, org.address AS organization_address, org.chief, org.financial_chief, org.inn_kpp AS organization_inn_kpp, ac.account_number, ac.bank_name, ac.bank_id_number, ph.date_with, ph.date_for, au.brand, au.model, au.state_number, dr.full_name AS driver_fio, dr.license, dr.class, di.full_name AS dispetcher_fio, mh.full_name AS mehanic_fio FROM %s AS ph JOIN %s AS ac ON ph.account_id = ac.id JOIN %s AS org ON ac.organization_id = org.id JOIN %s AS au ON ph.auto_id = au.id JOIN %s AS dr ON ph.driver_id = dr.id JOIN %s AS di ON ph.dispetcher_id = di.id JOIN %s AS mh ON ph.mechanic_id = mh.id WHERE user_id = $1", putlistHeadersTable, accountsTable, organizationsTable, autosTable, driversTable, dispetchersTable, mechanicsTable)

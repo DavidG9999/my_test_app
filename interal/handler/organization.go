@@ -12,6 +12,19 @@ type createOrganizationResponse struct {
 	Organization entity.Organization `json:"organization"`
 }
 
+// @Summary Create Organization
+// @Security ApiKeyAuth
+// @Tags organizations
+// @Description creates and adds data about the organization
+// @ID create-organization
+// @Accept json
+// @Produce json
+// @Param input body entity.Organization true "organization info"
+// @Success 200 {object} createOrganizationResponse "new organization"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /organizations [post]
 func (h *Handler) createOrganization(c *gin.Context) {
 	var input entity.Organization
 	if err := c.BindJSON(&input); err != nil {
@@ -32,6 +45,18 @@ type getOrganizationsResponse struct {
 	Organizations []entity.Organization `json:"organizations"`
 }
 
+// @Summary Get Organizations
+// @Security ApiKeyAuth
+// @Tags organizations
+// @Description gets data about all organizations
+// @ID get-organizations
+// @Accept json
+// @Produce json
+// @Success 200 {object} getOrganizationsResponse "organizations info"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /organizations [get]
 func (h *Handler) getOrganizations(c *gin.Context) {
 	organizations, err := h.services.Organization.GetOrganizations()
 	if err != nil {
@@ -47,6 +72,20 @@ type updateOrganizationResponse struct {
 	Organization entity.Organization `json:"update_organization"`
 }
 
+// @Summary Update Organizaion
+// @Security ApiKeyAuth
+// @Tags organizations
+// @Description updates data about the organization
+// @ID update-organization
+// @Accept json
+// @Produce json
+// @Param organization_id body integer true "organization id"
+// @Param updateData body entity.UpdateOrganizationInput true "update organization info"
+// @Success 200 {object} updateOrganizationResponse "updated organization"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /organizations/{organization_id} [put]
 func (h *Handler) updateOrganization(c *gin.Context) {
 	organiationId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
@@ -70,6 +109,19 @@ func (h *Handler) updateOrganization(c *gin.Context) {
 	})
 }
 
+// @Summary Delete Organization
+// @Security ApiKeyAuth
+// @Tags organizations
+// @Description deletes data about organization
+// @ID delete-organization
+// @Accept json
+// @Produce json
+// @Param organization_id body integer true "organization id"
+// @Success 200 {object} statusResponse "ok"
+// @Failure 400,404 {object} errorResponse
+// @Failure 500 {object} errorResponse
+// @Failure default {object} errorResponse
+// @Router /organizations/{organization_id} [delete]
 func (h *Handler) deleteOrganization(c *gin.Context) {
 	organiationId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
