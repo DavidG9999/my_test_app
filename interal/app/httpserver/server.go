@@ -1,4 +1,4 @@
-package interal
+package httpserver
 
 import (
 	"context"
